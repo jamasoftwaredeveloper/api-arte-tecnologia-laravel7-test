@@ -1,0 +1,196 @@
+[
+    {
+        "label": "Australian Dollar",
+        "value": "AUD"
+
+    },
+    {
+        "label": "Bitcoin Cash",
+        "value": "BCH"
+
+    },
+    {
+        "label": "Bulgarian Lev",
+        "value": "BGN"
+
+    },
+    {
+        "label": "Binance Coin",
+        "value": "BNB"
+
+    },
+    {
+        "label": "Brazilian Real",
+        "value": "BRL"
+
+    },
+    {
+        "label": "Bitcoin",
+        "value": "BTC"
+
+    },
+    {
+        "label": "Canadian Dollar",
+        "value": "CAD"
+
+    },
+    {
+        "label": "Swiss Franc",
+        "value": "CHF"
+
+    },
+    {
+        "label": "Chinese Yuan",
+        "value": "CNY"
+
+    },
+    {
+        "label": "Czech Republic Koruna",
+        "value": "CZK"
+
+    },
+    {
+        "label": "Danish Krone",
+        "value": "DKK"
+
+    },
+    {
+        "label": "Dogecoin",
+        "value": "DOG"
+
+    },
+    {
+        "label": "Algerian Dinar",
+        "value": "DZD"
+
+    },
+    {
+        "label": "Ethereum",
+        "value": "ETH"
+
+    },
+    {
+        "label": "Euro",
+        "value": "EUR"
+
+    },
+    {
+        "label": "British Pound Sterling",
+        "value": "GBP"
+
+    },
+    {
+        "label": "Hong Kong Dollar",
+        "value": "HKD"
+
+    },
+    {
+        "label": "Croatian Kuna",
+        "value": "HRK"
+
+    },
+    {
+        "label": "Hungarian Forint",
+        "value": "HUF"
+
+    },
+    {
+        "label": "Indonesian Rupiah",
+        "value": "IDR"
+
+    },
+    {
+        "label": "Israeli New Sheqel",
+        "value": "ILS"
+
+    },
+    {
+        "label": "Indian Rupee",
+        "value": "INR"
+
+    },
+    {
+        "label": "Icelandic Króna",
+        "value": "ISK"
+
+    },
+    {
+        "label": "Japanese Yen",
+        "value": "JPY"
+
+    },
+    {
+        "label": "South Korean Won",
+        "value": "KRW"
+
+    },
+    {
+        "label": "Litecoin",
+        "value": "LTC"
+
+    },
+    {
+        "label": "Moroccan Dirham",
+        "value": "MAD"
+    },
+    {
+        "label": "Mexican Peso",
+        "value": "MXN"
+    },
+    {
+        "label": "Malaysian Ringgit",
+        "value": "MYR"
+    },
+    {
+        "label": "Norwegian Krone",
+        "value": "NOK"
+    },
+    {
+        "label": "New Zealand Dollar",
+        "value": "NZD"
+    },
+    {
+        "label": "Philippine Peso",
+        "value": "PHP"
+    },
+    {
+        "label": "Polish Zloty",
+        "value": "PLN"
+    },
+    {
+        "label": "Romanian Leu",
+        "value": "RON"
+    },
+    {
+        "label": "Russian Ruble",
+        "value": "RUB"
+    },
+    {
+        "label": "Swedish Krona",
+        "value": "SEK"
+    },
+    {
+        "label": "Singapore Dollar",
+        "value": "SGD"
+    },
+    {
+        "label": "Thai Baht",
+        "value": "THB"
+    },
+    {
+        "label": "Turkish Lira",
+        "value": "TRY"
+    },
+    {
+        "label": "New Taiwan Dollar",
+        "value": "TWD"
+    },
+    {
+        "label": "Ripple",
+        "value": "XRP"
+    },
+    {
+        "label": "South African Rand",
+        "value": "ZAR"
+    }
+]
