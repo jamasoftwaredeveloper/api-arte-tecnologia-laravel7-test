@@ -3,170 +3,64 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\User;
-use App\UserModel;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 
 class AuthController extends Controller
 {
-    /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected AuthService $authService;
+
+    public function __construct(AuthService $authService)
     {
         $this->middleware('jwtauth', ['except' => ['login', 'register']]);
+        $this->authService = $authService;
     }
 
-    /*
-    |-------------------------------------------------------------------------------
-    | Login
-    |-------------------------------------------------------------------------------
-    | URL:            /api/v1/login
-    | Method:         Post
-    | Description:    Logueo
-    */
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
 
-        $validate = UserModel::getValidator($credentials);
+        $credentials = $request->only(['email', 'password']);
 
-        if ($validate->fails()) {
-
-            return response()->json(
-                [
-                    'data' => $validate->errors(),
-                    'execution_status' => "Los datos ingresados no cumple con lo requerido",
-                    "error" => true,
-                    'count' => 0,
-                    "class" => 'alert alert-danger'
-                ],
-                400
-            );
+        $validationResult = $this->authService->validateCredentials($credentials);
+        if ($validationResult->fails()) {
+            return $this->authService->generateErrorResponse($validationResult->errors(), "Los datos ingresados no cumplen con lo requerido", 400);
         }
 
-        if (!$token = JWTAuth::attempt($credentials)) {
-            return response()->json([
-                'data' => [],
-                'message' => 'Algo salio mal, ingresa tus credenciales nuevamente.',
-                'error' => true,
-                'execution_status' => "No autorizado.",
-                "class" => 'alert alert-danger'
-            ], 401);
+        $token = $this->authService->attemptLogin($credentials);
+        if (!$token) {
+            return $this->authService->generateErrorResponse([], 'Algo salió mal, ingresa tus credenciales nuevamente.', 401);
         }
-        return response()->json([
-            'data' => [$token, auth()->user()->name],
-            'message' => 'Te haz autenticado correctamente.',
-            'error' => false,
-            'execution_status' => "Exitoso.",
-            "class" => 'alert alert-success'
-        ], 200);
 
-
-        // return $this->respondWithToken($token);
+        return $this->authService->generateSuccessResponse([$token, auth()->user()->name], 'Te has autenticado correctamente.');
     }
 
-    /*
-    |-------------------------------------------------------------------------------
-    | getUser
-    |-------------------------------------------------------------------------------
-    | URL:            /api/v1/getUser
-    | Method:         Post
-    | Description:    Se retorna el usuario autenticado.
-    */
     public function getUser()
     {
-        return response()->json([
-            'data' => auth()->user(),
-            'message' => 'Te haz autenticado correctamente.',
-            'error' => false,
-            'execution_status' => "Exitoso.",
-            "class" => 'alert alert-success'
-        ], 200);
+        return $this->authService->generateSuccessResponse(auth()->user(), 'Usuario autenticado correctamente.');
     }
 
-    /*
-    |-------------------------------------------------------------------------------
-    | Logout
-    |-------------------------------------------------------------------------------
-    | URL:            /api/v1/logout
-    | Method:         Post
-    | Description:    Cerrar sessión
-    */
     public function logout()
     {
-        auth()->logout();
-        return response()->json([
-            'data' => null,
-            'message' => 'Se ha cerrado sessión exitosamente.',
-            'error' => false,
-            'execution_status' => "Exitoso.",
-            "class" => 'alert alert-success'
-        ], 200);
+        $this->authService->logout();
+        return $this->authService->generateSuccessResponse(null, 'Se ha cerrado sesión exitosamente.');
     }
-    /*
-    |-------------------------------------------------------------------------------
-    | checkToken
-    |-------------------------------------------------------------------------------
-    | URL:            /api/v1/checkToken
-    | Method:         Post
-    | Description:    Ficha de verificación.
-    */
+
     public function checkToken()
     {
-        return response()->json([
-            'data' => auth()->user(),
-            'message' => 'Ficha de verificación.',
-            'error' => false,
-            'execution_status' => "Exitoso.",
-            "class" => 'alert alert-success'
-        ], 200);
+        return $this->authService->generateSuccessResponse(auth()->user(), 'Ficha de verificación.');
     }
-    /*
-    |-------------------------------------------------------------------------------
-    | register
-    |-------------------------------------------------------------------------------
-    | URL:            /api/v1/register
-    | Method:         Post
-    | Description:    Registar nuevos usuarios
-    */
+
     protected function register(Request $request)
     {
+        $validationResult = $this->authService->validateRegistration($request->all());
 
-        $validate = UserModel::getValidator($request->all(), 'register');
-
-        if ($validate->fails()) {
-
-            return response()->json(
-                [
-                    'data' => $validate->errors(),
-                    'execution_status' => "Los datos ingresados no cumple con lo requerido",
-                    "error" => true,
-                    'count' => 0,
-                    "class" => 'alert alert-danger'
-                ],
-                400
-            );
+        if ($validationResult->fails()) {
+            return $this->authService->generateErrorResponse($validationResult->errors(), "Los datos ingresados no cumplen con lo requerido", 400);
         }
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $this->authService->createUser($request->only('name', 'email', 'password'));
 
-        return response()->json([
-            'data' => null,
-            'message' => 'Se ha creado exitosamente el usuario.',
-            'error' => false,
-            'execution_status' => "Exitoso.",
-            "class" => 'alert alert-success', 200
-        ]);
+        return $this->authService->generateSuccessResponse(null, 'Se ha creado exitosamente el usuario.');
     }
 }

@@ -19,6 +19,6 @@ class AdminController extends Controller
     | Description:    Dasboard
     */
     function index(){
-       return response()->json(['success'=>true,'message'=>'Tu loueo saliio exitoso.']);
+       return response()->json(['success'=>true,'message'=>'Tu logueo salio exitoso.']);
     }
 }

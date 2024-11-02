@@ -96,4 +96,11 @@ Route::group([
     | Description:    Retorna todos los codigos de moneda.
     */
     Route::post('/getCurrecyCodes', 'CurrencyCodeController@index');
+
+    Route::get('/config', function () {
+        return response()->json([
+            'API_URL_CURRENCY' => env('API_URL_CURRENCY'),
+            'API_KEY' => env('API_KEY'),
+        ]);
+    });
 });

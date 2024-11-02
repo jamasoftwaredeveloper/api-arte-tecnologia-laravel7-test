@@ -3,11 +3,11 @@ import VueRouter from "vue-router";
 import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
-import Dashboard from "./Dashboard";
+import Dashboard from "./components/Dashboard";
 
 Vue.use(VueRouter);
 
-export const routes=[
+export const routes =[
     {
         path:"/",
         name: "home",
@@ -28,5 +28,4 @@ export const routes=[
         name: "dashboard",
         component:Dashboard
     }
-
 ];

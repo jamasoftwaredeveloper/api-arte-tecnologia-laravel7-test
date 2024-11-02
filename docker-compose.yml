@@ -1,0 +1,36 @@
+services:
+  laravel-app:
+    container_name: proyecto
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=localhost
+      - DB_PORT=3306
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root  # Esto puede quedar como 'root' si es que usas MYSQL_ROOT_PASSWORD
+      - DB_PASSWORD=root  # Aquí deberías poner la misma contraseña que definiste en MYSQL_ROOT_PASSWORD
+    depends_on:
+      - db
+
+  localhost:
+    container_name: mysql
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root  # Define aquí la contraseña para el root
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  adminer:  # Agregamos el servicio de Adminer
+    container_name: admin
+    image: adminer
+    ports:
+      - "8080:8080" 
+volumes:
+  db_data:

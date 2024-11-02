@@ -20,7 +20,7 @@ class CurrencySeeder extends Seeder
 
         foreach ($data as $obj) {
            CurrencyCode::create(array(
-                'name' => $obj->name,
+                'label' => $obj->label,
                 'value' => $obj->value,
             ));
         }

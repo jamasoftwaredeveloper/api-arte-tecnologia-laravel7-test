@@ -1,0 +1,12 @@
+.input-field {
+    margin-bottom: 1rem;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.875rem;
+  }
+  
+  .is-invalid {
+    border-color: red;
+  }
