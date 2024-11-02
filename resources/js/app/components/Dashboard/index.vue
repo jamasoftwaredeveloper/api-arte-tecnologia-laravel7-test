@@ -6,12 +6,11 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <pre>{{ config }}</pre>
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2">
                         <label><b>Monto base (*)</b></label>
-                        <input class="form-control" v-model="base_amount" placeholder="23" type="number"/>
+                        <input class="form-control" v-model="baseAmount" placeholder="23" type="number"/>
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3" v-if="base_amount">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-3" v-if="baseAmount">
                         <label><b>Moneda base (*)</b></label>
                         <v-select :options="codes" :reduce="code => code.value" v-model="base"
                             placeholder="Bitcoin Cash" />
@@ -21,9 +20,9 @@
                         <v-select :options="codes" :reduce="code => code.value" placeholder="Canadian Dollar"
                             v-model="target" />
                     </div>
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2" v-if="value_conversion">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2" v-if="valueConversion">
                         <label><b>Resultado</b></label><br />
-                        <p class="text-success"><b>{{ target }}</b> : {{ value_conversion }}</p>
+                        <p class="text-success"><b>{{ target }}</b> : {{ valueConversion }}</p>
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2" v-if="target">
                         <label><b>Convertir</b></label><br />

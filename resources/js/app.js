@@ -9,10 +9,7 @@ require('./bootstrap');
 
 import Vue from "vue";
 import App from "./app/App";
-import {routes} from "./app/routes";
 import {store} from './app/store';
-import VueRouter from "vue-router";
-
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -25,18 +22,13 @@ import { fas} from '@fortawesome/free-solid-svg-icons';
 import { fab} from '@fortawesome/free-brands-svg-icons';
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
+import router from "./app/routes";
 /* add icons to the library */
 library.add(fas,fab)
 
 /* add font awesome icon component */
 Vue.component('fa', FontAwesomeIcon)
 Vue.component('v-select', vSelect)
-
-const router = new VueRouter({
-    routes,
-    mode:"history"
-});
-
 
 
 const app = new Vue({

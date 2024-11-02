@@ -9,9 +9,13 @@ export const store = new Vuex.Store({
         token: localStorage.getItem("auth") || "",
         autorized: localStorage.getItem("auth") ? true : false,
         user: localStorage.getItem("user") || "",
-        config: null,
+        configData: null,
+        loading: false,
     },
     mutations: {
+        setLoading(state, loading) {
+            state.loading = loading;
+        },
         setToken(state, token) {
             localStorage.setItem("auth", token);
             state.token = token;
@@ -28,13 +32,14 @@ export const store = new Vuex.Store({
             state.user = "";
             state.autorized = "";
         },
-        setConfig(state, config) {
-            state.config = config;
+        setConfig(state, configData) {
+            state.configData = configData;
         },
     },
     actions: {
         fetchConfig({ commit }) {
-            return axios.get("/api/v1/config")
+            return axios
+                .get("/api/v1/config")
                 .then((response) => {
                     commit("setConfig", response.data);
                 })
@@ -42,8 +47,36 @@ export const store = new Vuex.Store({
                     console.error("Error fetching config:", error);
                 });
         },
+        async checkToken({ state, commit, dispatch }, token) {
+            console.log("state",state);
+            console.log("token1",token);
+            console.log("commit1",commit);
+            if (state.token) {
+                
+                commit("setLoading", true);
+                try {
+                    const response = await axios.post(
+                        "/api/v1/checkToken",
+                        { token: state.token }
+                    );
+                    if (response) {
+
+                        
+                        commit("setLoading", false);
+                        this.$router.push("/dashboard");
+                        // Aquí puedes redirigir a la ruta que desees
+                    }
+                } catch (error) {
+                    commit("setLoading", false);
+                    commit("clearToken");
+                }
+            } else {
+                commit("setLoading", false);
+                commit("clearToken");
+            }
+        },
     },
     getters: {
-        getConfig: state => state.config,
-      },
+        getConfig: (state) => state.configData,
+    },
 });

@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import VueRouter from "vue-router";
 import Home from "./Home";
-import Login from "./Login";
-import Register from "./Register";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/dashboard";
+import register from './components/auth/register';
+import login from './components/auth/login';
 
 Vue.use(VueRouter);
 
-export const routes =[
+const routes = [
     {
         path:"/",
         name: "home",
@@ -16,12 +16,12 @@ export const routes =[
     {
         path:"/login",
         name: "login",
-        component:Login
+        component:login
     },
     ,{
         path: '/register',
         name: 'register',
-        component: Register
+        component: register
     },
     {
         path:"/dashboard",
@@ -29,3 +29,10 @@ export const routes =[
         component:Dashboard
     }
 ];
+
+const router = new VueRouter({
+    routes,
+    mode:"history"
+});
+
+export default router;
