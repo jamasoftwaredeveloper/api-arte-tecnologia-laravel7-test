@@ -1,11 +1,14 @@
 // src/services/configService.js
 import axios from 'axios';
+const service = axios.create({
+  baseURL: 'https://pokeapi.co/api/v2/pokemon', // Asegúrate de que esto esté definido correctamente
+  timeout: 10000, // Timeout de la solicitud
+});
+
 
 const get = async (url, header) => {
-
-  
   try {
-    const response = await axios.get(url);
+    const response = await service.get(url);
     return response.data;
   } catch (error) {
     console.error('Error fetching config (GET):', error);
@@ -15,7 +18,7 @@ const get = async (url, header) => {
 
 const post = async (url, data = {}) => {
   try {
-    const response = await axios.post(url, data);
+    const response = await service.post(url, data);
     return response.data;
   } catch (error) {
     console.error('Error posting config (POST):', error);
@@ -25,7 +28,7 @@ const post = async (url, data = {}) => {
 
 const put = async (url, data = {}) => {
   try {
-    const response = await axios.put(url, data);
+    const response = await service.put(url, data);
     return response.data;
   } catch (error) {
     console.error('Error updating config (PUT):', error);
@@ -35,7 +38,7 @@ const put = async (url, data = {}) => {
 
 const del = async (url) => {
   try {
-    const response = await axios.delete(url);
+    const response = await service.delete(url);
     return response.data;
   } catch (error) {
     console.error('Error deleting config (DELETE):', error);

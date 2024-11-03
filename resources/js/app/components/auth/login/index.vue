@@ -1,16 +1,6 @@
 <template>
     <div class="container">
-        <div v-if="loading">
-            <br /><br />
-            <div class="d-flex justify-content-center text-success">
-                <div class="spinner-border" role="status text-success">
-                    <span class="sr-only"></span>
-                </div>
-            </div>
-            <br />
-        </div>
-
-        <div class="card" v-else="">
+        <div class="card">
             <div class="card-header bg-success text-white">
                 Login
             </div>
@@ -39,5 +29,5 @@
         </div>
     </div>
 </template>
-<script src="./login.js"></script>
-<style src="./styles.css" scoped></style>
+<script src="./Login.js"></script>
+<style src="./Styles.css" scoped></style>

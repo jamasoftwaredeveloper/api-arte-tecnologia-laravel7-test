@@ -6,8 +6,8 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        token: localStorage.getItem("auth") || "",
-        autorized: localStorage.getItem("auth") ? true : false,
+        token: localStorage.getItem("authToken") || "",
+        autorized: localStorage.getItem("authToken") ? true : false,
         user: localStorage.getItem("user") || "",
         configData: null,
         loading: false,
@@ -17,7 +17,7 @@ export const store = new Vuex.Store({
             state.loading = loading;
         },
         setToken(state, token) {
-            localStorage.setItem("auth", token);
+            localStorage.setItem("authToken", token);
             state.token = token;
         },
         setUser(state, name) {
@@ -27,7 +27,7 @@ export const store = new Vuex.Store({
             state.autorized = status;
         },
         clearToken(state) {
-            localStorage.removeItem("auth");
+            localStorage.removeItem("authToken");
             state.token = "";
             state.user = "";
             state.autorized = "";
@@ -40,41 +40,13 @@ export const store = new Vuex.Store({
         fetchConfig({ commit }) {
             return axios
                 .get("/api/v1/config")
-                .then((response) => {
+                .then((response) => {                   
                     commit("setConfig", response.data);
                 })
                 .catch((error) => {
                     console.error("Error fetching config:", error);
                 });
-        },
-        async checkToken({ state, commit, dispatch }, token) {
-            console.log("state",state);
-            console.log("token1",token);
-            console.log("commit1",commit);
-            if (state.token) {
-                
-                commit("setLoading", true);
-                try {
-                    const response = await axios.post(
-                        "/api/v1/checkToken",
-                        { token: state.token }
-                    );
-                    if (response) {
-
-                        
-                        commit("setLoading", false);
-                        this.$router.push("/dashboard");
-                        // Aquí puedes redirigir a la ruta que desees
-                    }
-                } catch (error) {
-                    commit("setLoading", false);
-                    commit("clearToken");
-                }
-            } else {
-                commit("setLoading", false);
-                commit("clearToken");
-            }
-        },
+        }
     },
     getters: {
         getConfig: (state) => state.configData,

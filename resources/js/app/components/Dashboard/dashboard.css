@@ -10,4 +10,13 @@
   .text-success {
     font-weight: bold;
   }
-  
+  .pagination-container {
+    text-align: center; /* Centra el paginador horizontalmente */
+    margin-top: 1rem;   /* Espacio opcional entre los elementos */
+  }
+
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }

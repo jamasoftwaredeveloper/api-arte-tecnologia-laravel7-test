@@ -1,3 +1,5 @@
+import http from "../../../utils/http";
+
 export default {
     name:"Register",
     data () {
@@ -20,7 +22,7 @@ export default {
 
   methods: {
     register() {
-      axios
+      http
         .post("/api/v1/register",this.user)
         .then((response) => {
 

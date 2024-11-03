@@ -45,5 +45,5 @@
         </div>
     </div>
 </template>
-<script src="./register.js"></script>
-<style src="./styles.css" scoped></style>
+<script src="./Register.js"></script>
+<style src="./Styles.css" scoped></style>

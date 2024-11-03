@@ -17,6 +17,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core';
 
+import BootstrapVue from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 /* import the fontawesome core */
 import { fas} from '@fortawesome/free-solid-svg-icons';
 import { fab} from '@fortawesome/free-brands-svg-icons';
@@ -29,6 +32,7 @@ library.add(fas,fab)
 /* add font awesome icon component */
 Vue.component('fa', FontAwesomeIcon)
 Vue.component('v-select', vSelect)
+Vue.use(BootstrapVue);
 
 
 const app = new Vue({

@@ -1,90 +1,118 @@
-import axios from "axios";
 import configService from "../../utils/configService";
-import { mapActions, mapGetters } from "vuex";
-import { componentDataStructure } from "./dataStructure";
+import CardList from "../CardList/index.vue";
+import SearchInput from "../SearchInput/index.vue";
+import { ComponentDataStructure } from "./dataStructure";
+
 export default {
     name: "Dashboard",
-    components: {},
-    computed: {
-        ...mapGetters(["getConfig"]), // Usa el getter para acceder a configData
+    components: {
+        CardList,
+        SearchInput,
     },
+
     data() {
         return {
-            ...componentDataStructure,
-            token: this.$store.state.token,
+            ...ComponentDataStructure,
+            currentPage: 1,
+            perPage: 0, // Número de elementos por página
+            totalRows: 0, // Total de Pokémon disponibles,
+            filteredItems: [], // Ítems filtrados,
+            searchQuery: "",
+            count: 1302,
         };
     },
     created() {
-        this.getCurrencyCodes();
-        this.fetchConfig();
-        // this.$store.dispatch('checkToken',this.$store.state.token);
+        // Simulación de datos iniciales (puede venir de una API)
+        this.filteredItems = this.items; // Muestra todos al inicio
     },
     mounted() {
-
-       this.checkToken();
+        this.fetchAllPokemonImages();
+        this.getPokemonSearch();
     },
-    // https://dolarapi.com/docs/
     methods: {
-        ...mapActions(["fetchConfig"]),
-        async getCurrencyCodes() {
+        async getPokemons() {
             try {
-                this.loading = true;
-                const response = await axios.post("/api/v1/getCurrecyCodes", {
-                    token: this.token,
-                });
-                console.log("response", response);
-
-                this.codes = response.data;
+                const offset = (this.currentPage - 1) * this.perPage; // Calcula el offset
+                let endpoint = `${this.url}?offset=${offset}&limit=${this.perPage}`;
+                let response = await configService.get(endpoint);
+                this.totalRows = response.count;
+                return response.results;
             } catch (error) {
-                console.error("Error al obtener códigos de moneda", error);
+                console.log("error", error);
             } finally {
                 this.loading = false;
             }
         },
-        async checkToken() {
+        async getPokemonSearch() {
             try {
-                if (this.$store.state.token !== "") {
-                    const response = await configService.post(
-                        "/api/v1/checkToken",
-                        {
-                            token: this.token,
-                        }
-                    );
-                    if (!response.data.error) {
-                        this.$router.push("/dashboard");
-                    } else {
-                        this.$store.commit("setToken", response.data.token);
-                    }
-                } else {
-                    this.$router.push("/login");
+                const offset = (this.currentPage - 1) * this.count; // Calcula el offset
+                let endpoint = `${this.url}?offset=${offset}&limit=${this.count}`;
+                let response = await configService.get(endpoint);
+                this.totalRows = response.count;
+                this.filteredItems = response.results;
+            } catch (error) {
+                console.log("error", error);
+            } finally {
+                this.loading = false;
+            }
+        },
+        onPageChange(page) {
+            this.currentPage = page; // Actualiza la página actual
+            this.fetchAllPokemonImages(); // Vuelve a cargar los Pokémon de la nueva página
+        },
+        async fetchPokemonImage(url) {
+            try {
+                const data = await configService.get(url);
+                const {sprites} = data;
+                let imageUrl =sprites.other.dream_world.front_default; // Accede a la URL de la imagen
+                if (!imageUrl) {
+                    imageUrl =
+                       sprites.other.home.front_default ||
+                        "/pokebola.jpg";
                 }
+                console.log("  moves",  data.moves);
+                
+                return {
+                    id:data.id,
+                    name:data.name,
+                    imageUrl: imageUrl,
+                    abilities:data?.abilities || [],
+                    moves:data?.moves || [],
+                    stats:data?.stats || [],
+                    types:data?.types || [],
+                    weight:data?.weight,
+                    height:data?.height
+                };
             } catch (error) {
-                this.$router.push("/login");
-            } finally {
-                this.loading = false;
+                console.error("Error al obtener la imagen del Pokémon:", error);
             }
         },
-        async currencyConversion() {
-            try {
-                this.loading = true;
-                const url = this.$store.state.configData.API_URL_CURRENCY;
-                const apiKey = this.$store.state.configData.API_KEY;
-                const response = await configService.get(
-                    `${url}${apiKey}&base=${this.base}&target=${this.target}&baseAmount=${this.baseAmount}`
+
+        async fetchAllPokemonImages() {
+            const pokemonList = await this.getPokemons();
+            const promises = pokemonList.map(
+                async (pokemon) => await this.fetchPokemonImage(pokemon.url)
+            );
+            // Espera a que se resuelvan todas las promesas
+            const pokemonImages = await Promise.all(promises);
+            this.items = pokemonImages;
+        },
+        async handleSearch(term) {
+            if(term){
+                const pokemons = this.filteredItems.filter((item) =>
+                    item.name.toLowerCase().includes(term.toLowerCase())
                 );
-                this.valueConversion =
-                    response.data.exchange_rates[this.target];
-            } catch (error) {
-                console.error("Error en la conversión de moneda", error);
-            } finally {
-                this.loading = false;
+    
+                const promises = pokemons.map(
+                    async (pokemon) => await this.fetchPokemonImage(pokemon.url)
+                );
+                // Espera a que se resuelvan todas las promesas
+                const pokemonImages = await Promise.all(promises);
+                this.items = pokemonImages;
+                this.totalRows =pokemonImages.length;
+            }else{
+                await this.fetchAllPokemonImages()
             }
-        },
-        clearFilter() {
-            this.target = "";
-            this.base = "";
-            this.baseAmount = "";
-            this.valueConversion = "";
         },
     },
 };

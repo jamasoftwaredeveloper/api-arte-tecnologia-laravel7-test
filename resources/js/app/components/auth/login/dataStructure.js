@@ -1,4 +1,4 @@
-export const componentDataStructure = {
+export const ComponentDataStructure = {
     user: {
         email: "",
         password: "",

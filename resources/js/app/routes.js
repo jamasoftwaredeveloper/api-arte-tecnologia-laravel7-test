@@ -1,38 +1,40 @@
-import Vue from 'vue';
+import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "./Home";
-import Dashboard from "./components/dashboard";
-import register from './components/auth/register';
-import login from './components/auth/login';
+import Dashboard from "./components/Dashboard/index.vue";
+import Register from "./components/auth/register/index.vue";
+import Login from "./components/auth/login/index.vue";
+import Home from "./Home.vue";
+import configService from "./utils/configService";
 
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path:"/",
+        path: "/",
         name: "home",
-        component:Home
+        component: Home,
     },
     {
-        path:"/login",
+        path: "/login",
         name: "login",
-        component:login
+        component: Login,
     },
-    ,{
-        path: '/register',
-        name: 'register',
-        component: register
+    ,
+    {
+        path: "/register",
+        name: "register",
+        component: Register,
     },
     {
-        path:"/dashboard",
+        path: "/dashboard",
         name: "dashboard",
-        component:Dashboard
-    }
+        component: Dashboard,
+    },
 ];
 
 const router = new VueRouter({
     routes,
-    mode:"history"
+    mode: "history",
 });
 
 export default router;
