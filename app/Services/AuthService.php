@@ -1,9 +1,15 @@
 <?php
+
 namespace App\Services;
+
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+
 class AuthService
 {
     public function validateCredentials(array $data)
@@ -42,17 +48,31 @@ class AuthService
         ]);
     }
 
-    public function generateSuccessResponse($data, $message)
+    public function generateSuccessResponse($data, $message = "")
     {
         return response()->json([
             'data' => $data,
             'message' => $message,
-            'error' => false,
-            'execution_status' => 'Exitoso',
-            'class' => 'alert alert-success'
         ], 200);
     }
 
+    public function checkToken()
+    {
+        try {
+            // Intenta obtener el usuario autenticado a partir del token
+            $user = JWTAuth::parseToken()->authenticate();
+            if (!$user) {
+                return response()->json(['error' => 'Token no válido', "success" => false], 401);
+            }
+            return response()->json(['message' => 'Token válido', 'user' => $user, "success" => true], 200);
+        } catch (TokenExpiredException $e) {
+            return response()->json(['error' => 'Token expirado', "success" => false], 401);
+        } catch (TokenInvalidException $e) {
+            return response()->json(['error' => 'Token inválido', "success" => false], 401);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Token no encontrado', "success" => false], 401);
+        }
+    }
     public function generateErrorResponse($data, $message, $statusCode)
     {
         return response()->json([

@@ -10,7 +10,7 @@ const get = async (url, header) => {
         const response = await service.get(url);
         return response.data;
     } catch (error) {
-        console.error("Error fetching config (GET):", error);
+        console.log("Error fetching config (GET):", error);
         throw error;
     }
 };
@@ -20,7 +20,7 @@ const post = async (url, data = {}) => {
         const response = await service.post(url, data);
         return response.data;
     } catch (error) {
-        console.error("Error posting config (POST):", error);
+        console.log("Error posting config (POST):", error);
         throw error;
     }
 };
@@ -30,7 +30,7 @@ const put = async (url, data = {}) => {
         const response = await service.put(url, data);
         return response.data;
     } catch (error) {
-        console.error("Error updating config (PUT):", error);
+        console.log("Error updating config (PUT):", error);
         throw error;
     }
 };
@@ -40,7 +40,7 @@ const del = async (url) => {
         const response = await service.delete(url);
         return response.data;
     } catch (error) {
-        console.error("Error deleting config (DELETE):", error);
+        console.log("Error deleting config (DELETE):", error);
         throw error;
     }
 };

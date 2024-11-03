@@ -48,7 +48,7 @@ class AuthController extends Controller
 
     public function checkToken()
     {
-        return $this->authService->generateSuccessResponse(auth()->user(), 'Ficha de verificación.');
+        return $this->authService->generateSuccessResponse($this->authService->checkToken(),);
     }
 
     protected function register(Request $request)

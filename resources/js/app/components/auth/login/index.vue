@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="card">
-            <div class="card-header bg-success text-white">
+            <div class="card-header bg-primary text-white">
                 Login
             </div>
             <div class="card-body">
@@ -23,7 +23,7 @@
                         <input type="password" id="password" class="form-control" v-model="user.password"
                             placeholder="******" required />
                     </div>
-                    <button type="submit" class="btn btn-success btn-block">Ingresar</button>
+                    <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
                 </form>
             </div>
         </div>

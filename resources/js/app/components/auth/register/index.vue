@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="card">
-            <div class="card-header bg-success text-white">
+            <div class="card-header bg-primary text-white">
                 Registro
              </div>
             <div class="card-body">
@@ -39,7 +39,7 @@
                         <input type="password" id="confirmedPassword" class="form-control" v-model="user.confirmedPassword"  placeholder="******" min="6">
 
                     </div>
-                    <button type="submit" class="btn btn-success" v-if="user.confirmedPassword == user.password">Guardar</button>
+                    <button type="submit" class="btn btn-primary" v-if="user.confirmedPassword == user.password">Guardar</button>
                 </form>
             </div>
         </div>

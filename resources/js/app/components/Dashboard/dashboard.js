@@ -1,5 +1,6 @@
 import configService from "../../utils/configService";
 import CardList from "../CardList/index.vue";
+
 import SearchInput from "../SearchInput/index.vue";
 import { ComponentDataStructure } from "./dataStructure";
 
@@ -14,7 +15,7 @@ export default {
         return {
             ...ComponentDataStructure,
             currentPage: 1,
-            perPage: 0, // Número de elementos por página
+            perPage: 20, // Número de elementos por página
             totalRows: 0, // Total de Pokémon disponibles,
             filteredItems: [], // Ítems filtrados,
             searchQuery: "",
@@ -70,16 +71,15 @@ export default {
                        sprites.other.home.front_default ||
                         "/pokebola.jpg";
                 }
-                console.log("  moves",  data.moves);
+                console.log("moves",  data.abilities.slice(0,2));
                 
                 return {
                     id:data.id,
                     name:data.name,
                     imageUrl: imageUrl,
-                    abilities:data?.abilities || [],
-                    moves:data?.moves || [],
-                    stats:data?.stats || [],
-                    types:data?.types || [],
+                    abilities:data?.abilities.slice(0,2) || [],
+                    moves:data?.moves.slice(0,2) || [],
+                    types:data?.types.slice(0,2) || [],
                     weight:data?.weight,
                     height:data?.height
                 };
@@ -98,6 +98,7 @@ export default {
             this.items = pokemonImages;
         },
         async handleSearch(term) {
+            this.loading = true
             if(term){
                 const pokemons = this.filteredItems.filter((item) =>
                     item.name.toLowerCase().includes(term.toLowerCase())
@@ -108,10 +109,13 @@ export default {
                 );
                 // Espera a que se resuelvan todas las promesas
                 const pokemonImages = await Promise.all(promises);
+
                 this.items = pokemonImages;
-                this.totalRows =pokemonImages.length;
+                this.totalRows = pokemonImages.length;
+                this.loading = false
             }else{
                 await this.fetchAllPokemonImages()
+                this.loading = false
             }
         },
     },

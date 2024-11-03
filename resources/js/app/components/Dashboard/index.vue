@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <SearchInput @search="handleSearch" />
-        <CardList :cards="items" />
-        <div class="pagination-container" v-if="items.length > 0">
+        <CardList :cards="items" v-if="!loading"/>
+        <div class="pagination-container" v-if="items.length > 0 && loading">
             <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" aria-controls="my-cards"
                 @change="onPageChange"></b-pagination>
         </div>
