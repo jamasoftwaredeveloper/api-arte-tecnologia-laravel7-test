@@ -1,6 +1,7 @@
 PASO A PASO
 
 REQUERIMIENTOS.
+node v16.20.2
 Contar con npm, php "^7.2.5|^8.0", composer
 
 1. Descargar el proyecto en formato zip o clonar el respositorio.
